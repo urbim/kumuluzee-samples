@@ -17,10 +17,12 @@
         <module>kumuluzee-config</module>
         <module>kumuluzee-config-etcd</module>
         <module>kumuluzee-logs</module>
+		<module>kumuluzee-rest</module>
+        <module>kumuluzee-security-keycloak</module>
         <module>microservices-simple</module>
         <module>servlet</module>
         <module>websocket</module>
-        <module>discovery-samples</module>
+        <module>kumuluzee-discovery</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -28,7 +30,8 @@
 
     <inceptionYear>2017</inceptionYear>
     <description>
-        These samples demonstrate how to get started using KumuluzEE. They provide small, specific, working samples that can be used as a reference for your own projects.
+        These samples demonstrate how to get started using KumuluzEE. They provide small, specific, working samples
+        that can be used as a reference for your own projects.
     </description>
 
     <url>https://ee.kumuluz.com</url>

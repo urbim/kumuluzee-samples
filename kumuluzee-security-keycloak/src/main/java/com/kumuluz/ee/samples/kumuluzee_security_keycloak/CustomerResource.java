@@ -18,54 +18,52 @@
  *  software. See the License for the specific language governing permissions and
  *  limitations under the License.
 */
-package com.kumuluz.ee.samples.kumuluz_config_etcd;
+package com.kumuluz.ee.samples.kumuluzee_security_keycloak;
 
-import com.kumuluz.ee.configuration.utils.ConfigurationUtil;
-
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 /**
  * @author Benjamin Kastelic
  * @since 2.3.0
  */
-@RequestScoped
-@Path("/")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ConfigResource {
-
-    @Inject
-    private ConfigProperties properties;
+@Path("customers")
+public class CustomerResource {
 
     @GET
-    @Path("/config")
-    public Response test() {
-        String response =
-                "{" +
-                        "\"stringProperty\": \"%s\"," +
-                        "\"booleanProperty\": %b," +
-                        "\"integerProperty\": %d" +
-                        "}";
-
-        response = String.format(
-                response,
-                properties.getStringProperty(),
-                properties.getBooleanProperty(),
-                properties.getIntegerProperty());
-
-        return Response.ok(response).build();
+    @PermitAll
+    public Response getAllCustomers() {
+        List<Customer> customers = Database.getCustomers();
+        return Response.ok(customers).build();
     }
 
     @GET
-    @Path("/get")
-    public Response get() {
-        return Response.ok(ConfigurationUtil.getInstance().get("rest-config.string-property").orElse("nope")).build();
+    @Path("{customerId}")
+    public Response getCustomer(@PathParam("customerId") String customerId) {
+        Customer customer = Database.getCustomer(customerId);
+        return customer != null
+                ? Response.ok(customer).build()
+                : Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @POST
+    @RolesAllowed({"user"})
+    public Response addNewCustomer(Customer customer) {
+        Database.addCustomer(customer);
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("{customerId}")
+    @RolesAllowed("user")
+    public Response deleteCustomer(@PathParam("customerId") String customerId) {
+        Database.deleteCustomer(customerId);
+        return Response.noContent().build();
     }
 }
