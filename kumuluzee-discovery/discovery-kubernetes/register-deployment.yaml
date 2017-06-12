@@ -13,8 +13,8 @@ spec:
       - image: register-sample:v1
         name: register
         env:
-          - name: KUMULUZEE_BASEURL
-            value: http://192.168.99.100:30778
+#          - name: KUMULUZEE_BASEURL
+#            value: http://NODE-IP:SERVICE-NODEPORT
           - name: KUMULUZEE_DISCOVERY_CLUSTER
             value: minikube
           - name: KUMULUZEE_DISCOVERY_ETCD_HOSTS
