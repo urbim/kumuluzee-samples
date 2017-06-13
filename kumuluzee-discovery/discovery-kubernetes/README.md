@@ -1,4 +1,4 @@
-# KumuluzEE Service Discovery Kubernetes sample
+# KumuluzEE Discovery - Kubernetes sample
 
 > Deploy KumuluzEE microservices, which use Service Discovery to Kubernetes cluster.
 
@@ -61,14 +61,14 @@ To run a local minikube cluster run following commands:
 
 1. Start minikube cluster and configure kubectl to use it:
     
-    ```
-    minikube start
+    ```bash
+    $ minikube start
     ```
 
 2. Configure docker to use minikube registry:
 
-    ```
-    eval $(minikube docker-env)
+    ```bash
+    $ eval $(minikube docker-env)
     ```
 
 ## Usage
@@ -76,38 +76,38 @@ To run a local minikube cluster run following commands:
 1. Build `discovery-discover-jaxrs` and `discovery-register` samples using maven and create Docker images:
 
     ```bash
-        $ cd discovery-samples/discovery-discover-jaxrs
-        $ mvn clean package
-        $ docker build -t discover-sample:v1 .
-        $ cd ../discovery-register
-        $ mvn clean package
-        $ docker build -t register-sample:v1 .
+    $ cd discovery-samples/discovery-discover-jaxrs
+    $ mvn clean package
+    $ docker build -t discover-sample:v1 .
+    $ cd ../discovery-register
+    $ mvn clean package
+    $ docker build -t register-sample:v1 .
     ```
 
 2. Start an etcd instance in Kubernetes cluster:
 
     ```bash
-        $ cd ../discovery-kubernetes
-        $ kubectl create -f etcd.yaml
+    $ cd ../discovery-kubernetes
+    $ kubectl create -f etcd.yaml
     ```
 
 3. Run both samples in Kubernetes cluster:
 
     ```bash
-        $ kubectl create -f register-deployment.yaml
-        $ kubectl create -f discover-deployment.yaml
+    $ kubectl create -f register-deployment.yaml
+    $ kubectl create -f discover-deployment.yaml
     ```
 
 4. Create service for discover deployment and expose its NodePort:
 
     ```bash
-        $ kubectl create -f discover-service.yaml
+    $ kubectl create -f discover-service.yaml
     ```
 
 5. Get the port, which was assigned to discover service:
 
     ```bash
-        $ kubectl describe service discover | egrep NodePort:
+    $ kubectl describe service discover | egrep NodePort:
     ```
 
 The application/service can be accessed on the following URL:
@@ -117,20 +117,20 @@ The application/service can be accessed on the following URL:
 You can find minikube IP using following command:
 
 ```bash
-    $ minikube ip
+$ minikube ip
 ```
 
 To remove Kubernetes deployments and service run following commands:
 
 ```bash
-    $ kubectl delete deployment register-deployment discover-deployment
-    $ kubectl delete service discover etcd
+$ kubectl delete deployment register-deployment discover-deployment
+$ kubectl delete service discover etcd
 ```
 
 To shut down the minikube cluster run following command:
 
 ```bash
-    $ minikube stop
+$ minikube stop
 ```
 
 ## Tutorial
@@ -302,7 +302,7 @@ We use the same environment variables in this deployment.
 
 If you want your service to be accessible outside the cluster, you should also specify environment
 variable `KUMULUZEE_BASEURL` (commented lines above). Services outside your cluster will then access your service by
-`KUMULUZEE_BASEURL`, services outside your cluster will access your service by its pod IP.
+`KUMULUZEE_BASEURL`, services inside your cluster will access your service by its pod IP.
 
 Use commands, described in the Usage section step 3 to create the deployment.
 
