@@ -1,4 +1,4 @@
-FROM isuper/java-oracle
+FROM openjdk:8u131-jre-alpine
 
 
 COPY target /usr/src/myapp
