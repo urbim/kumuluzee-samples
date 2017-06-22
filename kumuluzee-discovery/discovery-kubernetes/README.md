@@ -231,6 +231,10 @@ spec:
 
 Use commands, described in the Usage section step 2 to create the deployment.
 
+By creating etcd Kubernetes service, etcd instance is available outside the cluster by its
+NodePort (http://NODE-IP:NODE-PORT). If you wish to register services outside the cluster, make sure you use this
+address in `KUMULUZEE_DISCOVERY_ETCD_HOSTS` key.
+
 ### Create deployments for both samples
 
 Create deployment for the discover sample:
@@ -327,3 +331,11 @@ spec:
 ```
 
 Use commands, described in the Usage section step 5 to access the service.
+
+#### Running services outside cluster
+
+If you want, you can also run services outside your cluster. In that case, don't specify `KUMULUZEE_DISCOVEY_CLUSTER`
+key and services will be able to correctly register and discover each other. You can also run services in different
+cluster, in which case you should specify different `KUMULUZEE_DISCOVEY_CLUSTER` key for all services in another
+cluster. If you are running services on different locations, remember that in order for services to correctly discover
+each other, every service should be registered in the same etcd cluster.
